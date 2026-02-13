@@ -1,0 +1,72 @@
+{
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "google-gemini-cli/gemini-3-pro-preview"
+      },
+      "compaction": {
+        "mode": "safeguard"
+      },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8
+      },
+      "models": {
+        "google-gemini-cli/gemini-3-pro-preview": {}
+      }
+    }
+  },
+  "messages": {
+    "ackReactionScope": "group-mentions"
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto"
+  },
+  "channels": {
+    "discord": {
+      "enabled": true,
+      "token": "YOUR_DISCORD_BOT_TOKEN_HERE",
+      "groupPolicy": "allowlist",
+      "dm": {
+        "enabled": true,
+        "policy": "pairing"
+      },
+      "guilds": {
+        "*": {
+          "requireMention": false,
+          "channels": {
+            "*": {
+              "systemPrompt": "YOUR_SYSTEM_PROMPT_HERE"
+            }
+          }
+        }
+      }
+    }
+  },
+  "gateway": {
+    "mode": "local",
+    "auth": {
+      "mode": "token",
+      "token": "YOUR_GATEWAY_TOKEN_HERE"
+    }
+  },
+  "plugins": {
+    "entries": {
+      "discord": {
+        "enabled": true
+      },
+      "google-gemini-cli-auth": {
+        "enabled": true
+      }
+    }
+  },
+  "auth": {
+    "profiles": {
+      "google-gemini-cli:YOUR_EMAIL_HERE": {
+        "provider": "google-gemini-cli",
+        "mode": "oauth"
+      }
+    }
+  }
+}

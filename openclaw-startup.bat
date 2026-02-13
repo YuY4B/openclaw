@@ -14,9 +14,13 @@ REM Gemini CLI OAuth クレデンシャル
 set GEMINI_CLI_OAUTH_CLIENT_ID=681255809395-oo8ft2oprdrnp9e3aqf6av3hmdib135j.apps.googleusercontent.com
 set GEMINI_CLI_OAUTH_CLIENT_SECRET=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
 
+REM Playwright (Browser Tool) 用の環境変数
+set HOME=%USERPROFILE%
+
 REM OpenClaw ディレクトリに移動
 cd /d C:\Users\hakua\Downloads\OpenClaw
 
 REM Gateway 起動（ポート18789）
-echo [%date% %time%] OpenClaw Gateway を起動しています...
+echo Start OpenClaw Gateway...
 node scripts/run-node.mjs gateway --port 18789
+pause
