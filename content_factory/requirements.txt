@@ -1,0 +1,26 @@
+# AI Content Factory Dependencies
+# Python 3.11+ required
+
+# HTTP Client
+requests>=2.31.0
+
+# YAML Configuration
+PyYAML>=6.0.1
+
+# Async Support (for future enhancements)
+aiohttp>=3.9.0
+asyncio>=3.4.3
+
+# Logging
+python-json-logger>=2.0.7
+
+# Monitoring (Optional)
+prometheus-client>=0.19.0
+
+# Discord/Slack Notifications (Optional)
+discord-webhook>=0.18.0
+slack-sdk>=3.21.0
+
+# Windows UTF-8 Support
+# Note: Run with `chcp 65001` on Windows before execution
+# Or set PYTHONIOENCODING=utf-8

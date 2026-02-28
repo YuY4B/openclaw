@@ -1,0 +1,198 @@
+# AI Content Factory - Configuration
+# UTF-8 with BOM for Windows compatibility
+
+# Azure Functions Configuration
+azure:
+  # Base URL for Azure Functions (API Gateway)
+  base_url: "https://your-function-app.azurewebsites.net/api"
+  
+  # Agent endpoints
+  agents:
+    beauty: "/beauty"
+    gadget: "/gadget"
+    food: "/food"
+    fashion: "/fashion"
+    fitness: "/fitness"
+  
+  # Authentication
+  api_key: "${AZURE_API_KEY}"
+  
+  # Request timeout (seconds)
+  timeout: 30
+  
+  # Rate limiting
+  requests_per_minute: 20
+
+# OpenClaw Configuration
+openclaw:
+  # OpenClaw CLI path
+  cli_path: "openclaw"
+  
+  # Session management
+  session_dir: "~/.openclaw/sessions"
+  
+  # Connection timeout
+  connection_timeout: 60
+  
+  # Post verification
+  verify_post: true
+
+# Video Generation Configuration
+video:
+  # Video creator script path
+  script_path: "src/scripts/content_factory/video_creator.py"
+  
+  # Output directory
+  output_dir: "./output/videos"
+  
+  # Default voice (edge-tts)
+  default_voice: "ja-JP-NanamiNeural"
+  
+  # Video settings
+  resolution: "1080x1920"  # TikTok vertical
+  fps: 30
+  image_duration: 5  # seconds per image
+  
+  # Queue settings
+  max_queue_size: 50
+  worker_threads: 3
+
+# Account Pool Configuration
+accounts:
+  # Account pools by niche
+  pools:
+    - pool_id: "pool_beauty"
+      niche: "beauty"
+      accounts:
+        - id: "beauty_001"
+          session: "session_beauty_001"
+          proxy: "${PROXY_001}"
+        - id: "beauty_002"
+          session: "session_beauty_002"
+          proxy: "${PROXY_002}"
+      max_daily_posts: 5
+      min_interval: 30  # minutes
+      
+    - pool_id: "pool_gadget"
+      niche: "gadget"
+      accounts:
+        - id: "gadget_001"
+          session: "session_gadget_001"
+          proxy: "${PROXY_003}"
+      max_daily_posts: 5
+      min_interval: 30
+
+# Shadowban Prevention
+protection:
+  # IP Rotation
+  ip_rotation:
+    enabled: true
+    proxy_pool:
+      - "${PROXY_001}"
+      - "${PROXY_002}"
+      - "${PROXY_003}"
+    rotation_strategy: "round_robin"  # round_robin, random, sticky
+    
+  # Posting limits
+  posting:
+    min_interval: 30  # minutes between posts
+    max_interval: 120
+    max_posts_per_day: 5
+    randomize_timing: true
+    
+  # Behavior simulation
+  behavior:
+    scroll_before_post: true
+    scroll_duration: [3, 8]  # seconds (random range)
+    like_before_post: true
+    like_count: [1, 3]
+    comment_engagement: false
+
+# Error Handling
+error_handling:
+  max_retries: 5
+  base_delay: 5  # seconds
+  max_delay: 300  # 5 minutes
+  exponential_base: 2
+  
+  # Error categories
+  retryable_errors:
+    - "NetworkTimeout"
+    - "APIRateLimit"
+    - "OpenClawConnectionError"
+    - "VideoGenerationError"
+    
+  fatal_errors:
+    - "AccountBanned"
+    - "InvalidCredentials"
+    - "ProxyAuthenticationFailed"
+
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  format: "json"  # json, text
+  output: "file"  # file, stdout, both
+  
+  # Log files
+  log_dir: "./logs"
+  rotation:
+    max_bytes: 10485760  # 10MB
+    backup_count: 5
+    
+  # Log destinations
+  destinations:
+    file: "./logs/controller.log"
+    error_file: "./logs/errors.log"
+
+# Execution Settings
+execution:
+  # Run mode
+  mode: "production"  # production, test, dry_run
+  
+  # Scheduling
+  cycle_interval: 60  # minutes between full cycles
+  adaptive_interval: true  # Adjust based on queue
+  
+  # Shutdown
+  graceful_shutdown_timeout: 30
+  
+  # Health check
+  health_check_interval: 300  # seconds
+
+# Monitoring (Optional)
+monitoring:
+  enabled: false
+  
+  # Prometheus metrics
+  prometheus:
+    enabled: false
+    port: 9090
+    
+  # Discord/Slack webhook
+  alerts:
+    enabled: false
+    webhook_url: "${ALERT_WEBHOOK_URL}"
+    
+  # Metrics to track
+  metrics:
+    - posts_total
+    - posts_success
+    - posts_failed
+    - api_latency
+    - shadowban_count
+    - queue_size
+
+# Advanced Settings
+advanced:
+  # Resource limits
+  max_concurrent_videos: 3
+  max_memory_mb: 2048
+  
+  # Cache
+  cache_enabled: true
+  cache_ttl: 3600  # seconds
+  
+  # Debug
+  debug_mode: false
+  save_api_responses: false
+  save_generated_videos: true
